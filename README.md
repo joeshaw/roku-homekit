@@ -1,7 +1,7 @@
-# roku-homecontrol
+# roku-homekit
 
 HomeKit support for Roku devices using
-[HomeControl](https://github.com/brutella/hc) and @picat's [roku Go
+[hc](https://github.com/brutella/hc) and @picatz's [roku Go
 library](https://github.com/picatz/roku).
 
 Newer Roku devices have native support for HomeKit, but this service allows any Roku device (with the External Control Protocol enabled) to be used with HomeKit.
@@ -10,7 +10,7 @@ When running, this service publishes a HomeKit accessory for every Roku device i
 
 Applications installed on the Roku appear as inputs on the HomeKit
 device.  However, these inputs are static -- applications that are
-installed or removed will not be reflected until roku-homecontrol is
+installed or removed will not be reflected until roku-homekit is
 restarted.  As far as I can tell this seems to be a limitation of
 HomeKit.
 
@@ -22,11 +22,11 @@ control your Roku.
 
 The tool can be installed with:
 
-    go get -u github.com/joeshaw/roku-homecontrol
+    go get -u github.com/joeshaw/roku-homekit
 
 Then you can run the service:
 
-    roku-homecontrol
+    roku-homekit
 
 The service will use SSDP to look for any Roku devices on the local
 network for 5 seconds, and then instantiate the HomeKit accessories.
@@ -45,5 +45,5 @@ sure the code has been run through `gofmt`.
 
 Copyright 2021 Joe Shaw
 
-`roku-homecontrol` is licensed under the MIT License.  See the LICENSE
+`roku-homekit` is licensed under the MIT License.  See the LICENSE
 file for details.

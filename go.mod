@@ -1,4 +1,4 @@
-module github.com/joeshaw/roku-homecontrol
+module github.com/joeshaw/roku-homekit
 
 go 1.15
 

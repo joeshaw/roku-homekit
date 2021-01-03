@@ -37,7 +37,7 @@ type config struct {
 func main() {
 	var cfg config
 
-	fs := flag.NewFlagSet("roku-homecontrol", flag.ExitOnError)
+	fs := flag.NewFlagSet("roku-homekit", flag.ExitOnError)
 	fs.StringVar(
 		&cfg.storagePath,
 		"storage-path",
