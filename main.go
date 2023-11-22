@@ -199,7 +199,18 @@ func (r *Roku) identify() {
 }
 
 func (r *Roku) getActive() int {
-	if r.deviceInfo.PowerMode == "PowerOn" {
+	var (
+		deviceInfo *roku.DeviceInfo
+		err        error
+	)
+
+	deviceInfo, err = r.endpoint.DeviceInfo()
+	if err != nil {
+		log.Printf("unable to get device info for %s: %v", r.deviceInfo.UserDeviceName, err)
+		deviceInfo = r.deviceInfo // fallback to last known
+	}
+
+	if deviceInfo.PowerMode == "PowerOn" {
 		return characteristic.ActiveActive
 	} else {
 		return characteristic.ActiveInactive
