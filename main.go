@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/brutella/hc"
 	"github.com/brutella/hc/accessory"
@@ -46,6 +47,7 @@ func main() {
 	)
 	fs.StringVar(&cfg.homekitPIN, "homekit-pin", "00102003", "HomeKit pairing PIN")
 	fs.BoolVar(&cfg.debug, "debug", false, "Enable debug mode")
+
 	_ = fs.String("config", "", "Config file")
 
 	ff.Parse(fs, os.Args[1:],
@@ -88,7 +90,7 @@ func main() {
 
 	for _, r := range rokus {
 		log.Printf("Starting transport for %q...", r.deviceInfo.UserDeviceName)
-		go r.transport.Start()
+		r.start(ctx)
 	}
 
 	<-ctx.Done()
@@ -156,6 +158,21 @@ func setupRoku(cfg *config, e *roku.Endpoint) (*Roku, error) {
 	r.transport = t
 
 	return r, nil
+}
+
+func (r *Roku) start(ctx context.Context) {
+	go r.transport.Start()
+	go func(ctx context.Context) {
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case <-time.After(10 * time.Second):
+				r.tv.Active.SetValue(r.getActive())
+				r.tv.ActiveIdentifier.SetValue(r.getActiveIdentifier())
+			}
+		}
+	}(ctx)
 }
 
 func (r *Roku) addApp(app *roku.App) {
